@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react'
-
-import cover from "../../assets/signin.png"
 import { useDispatch, useSelector } from 'react-redux';
 import { message } from 'antd';
+import { NavLink, useNavigate } from 'react-router-dom';
+
+// action imports
 import { loginUser, signupUser } from '../../actions/AppActions';
-import { NavLink } from 'react-router-dom';
+
+// file imports
+import cover from "../../assets/signin.png"
 
 export default function Signup() {
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+    
 
     const [state, setState] = useState({
 
@@ -26,9 +31,6 @@ export default function Signup() {
     
     const appState = useSelector((state) => state.app);
 
-
-
-  
     useEffect(() => {
       try {
         setState((prevState) => ({
@@ -69,14 +71,13 @@ export default function Signup() {
             return; // Exit the function if passwords don't match
         }
 
-       
     
         // Check if all required fields are filled
         if (email && password && name && phone_number) {
          
     
             // Dispatch the signup action
-            dispatch(signupUser(email, password, name, phone_number, password_confirm, currentRole));
+            dispatch(signupUser(email, password, name, phone_number, password_confirm, currentRole, navigate));
         } else {
             message.error("All fields are required");
         }

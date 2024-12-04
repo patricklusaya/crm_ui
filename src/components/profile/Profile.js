@@ -1,7 +1,7 @@
 import { Smiley } from 'phosphor-react';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { formatDate } from '../joblistings/JobListingCard';
+
 
 
 
@@ -69,7 +69,7 @@ import { formatDate } from '../joblistings/JobListingCard';
               <div className="text-center mt-4">
                 <h2 className="text-xl font-semibold text-gray-800">{user.name}</h2>
                 {/* <p className="text-sm text-gray-500 mt-1">{user.location}</p> */}
-                <p className="text-gray-600"> Joined {formatDate(user.created_at)}  </p>
+                {/* <p className="text-gray-600"> Joined {formatDate(user.created_at)}  </p> */}
                 <a href={`mailto:${user.email}`} className="text-sm text-blue-600 mt-2 underline">
                   {user.email}
                 </a>

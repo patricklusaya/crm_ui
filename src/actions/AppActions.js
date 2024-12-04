@@ -9,13 +9,10 @@ import { LOGIN_REQUEST,
    SIGNUP_REQUEST,
    SIGNUP_FAILURE,
    SIGNUP_SUCCESS, 
-   FIND_INFO_REQUEST,
-   FIND_INFO_SUCCESS,
-   FIND_INFO_FAILED,
+
    FETCH_CUSTOMER_SUCCESS,
    FETCHING_CUSTOMERS,
-   
-  
+
   
   } from "./Types";
 
@@ -144,11 +141,12 @@ export const logoutUser = (navigate, token) => {
 
 
 
-export const signupUser = (email, password, name, phone_number,password_confirm,  currentRole) => {
+export const signupUser = (email, password, name, phone_number,password_confirm,  currentRole, navigate) => {
   return async (dispatch) => {
     console.log('send loader 2')
     // Dispatch request action for loading state
     dispatch({ type: SIGNUP_REQUEST });
+    message.loading('Signing up ..')
 
     try {
       const user = await signup(email, password, name, phone_number,password_confirm, currentRole);
@@ -160,8 +158,9 @@ export const signupUser = (email, password, name, phone_number,password_confirm,
         type: SIGNUP_SUCCESS,
        
       });
-      
-     
+
+      message.success("Signed up sucessfully")
+        navigate('/login')
     } catch (error) {
       console.error('Error Signing up:', error);
       // Dispatch failure action with error message
@@ -169,6 +168,8 @@ export const signupUser = (email, password, name, phone_number,password_confirm,
         type: SIGNUP_FAILURE,
         payload: error.message,
       });
+
+      message.error('Something went wrong')
     }
   };
 };
@@ -330,46 +331,6 @@ export const fetchCustomers = () => {
 };
 
 
-export const findApplicantInfo = (userId) => {
-  return async (dispatch) => {
-
-    console.log('find', userId)
-
-    dispatch({ type:FIND_INFO_REQUEST });
-
-    const userProfile = JSON.parse(localStorage.getItem('userProfile'));
-
-    // Extract the token from userProfile
-    const token = userProfile ? userProfile.token : null;
-   
-    try {
-      const response = await fetch(`http://127.0.0.1:8000/api/users/${userId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`, // Use Bearer token for authorization
-          'Content-Type': 'application/json',
-      },
-        
-      });
-    
-      // Check if the response is ok (status in the range 200-299)
-      if (!response.ok) {
-        dispatch({ type:FIND_INFO_FAILED });
-        throw new Error( 'Failed to get info.'); // Use the error message from the response or a default message
-       
-      }
-      const info = await response.json();
-      console.log('response info:', info);
-      dispatch({ type:FIND_INFO_SUCCESS , payload:info});
-    
-    } catch (error) {
-      console.error('Error getting info:', error);
-      dispatch({ type:FIND_INFO_FAILED });
-      
-    }
-  };
-};
-
 
 export const updateCustomer = (customerId, updatedData) => async (dispatch) => {
   // dispatch({ type: UPDATE_CUSTOMER_REQUEST });
@@ -417,8 +378,6 @@ export const deleteCustomer = (id) => {
 
   const userProfile = JSON.parse(localStorage.getItem('userProfile'));
   const userToken = userProfile ? userProfile.token : null;
-
-
 
   message.info(" Deleting .. ")
 

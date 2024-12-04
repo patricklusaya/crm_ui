@@ -9,9 +9,7 @@ import {
   SIGNUP_REQUEST,
   SIGNUP_FAILURE,
   SIGNUP_SUCCESS,
-  FIND_INFO_REQUEST,
-  FIND_INFO_SUCCESS,
-  FIND_INFO_FAILED,
+ 
   FETCH_CUSTOMER_SUCCESS,
   FETCHING_CUSTOMERS,
 } from "../actions/Types";
@@ -27,9 +25,9 @@ const INITIAL_STATE = {
   signupError: "",
   loadingUserInfo: false,
   userInfo: {},
-  loading:false,
-  customers:[],
-  loadingCustomers:false
+  loading: false,
+  customers: [],
+  loadingCustomers: false,
 };
 
 const AppReducer = (state = INITIAL_STATE, action) => {
@@ -44,7 +42,7 @@ const AppReducer = (state = INITIAL_STATE, action) => {
       return { ...state, authenticating: false, profile: action.payload.user };
 
     case SIGNUP_REQUEST:
-    return { ...state, loading: true  };
+      return { ...state, loading: true };
     case SIGNUP_SUCCESS:
       return { ...state, signupLoad: false };
     case SIGNUP_FAILURE:
@@ -65,19 +63,12 @@ const AppReducer = (state = INITIAL_STATE, action) => {
     case LOGIN_FAILURE:
       return { ...state, authenticating: false, authError: action.payload };
 
-    case FIND_INFO_SUCCESS:
-      return { ...state, loadingUserInfo: false, userInfo: action.payload };
-    case FIND_INFO_FAILED:
-      return { ...state, loadingUserInfo: false };
 
-    case FIND_INFO_REQUEST:
-      return { ...state, loadingUserInfo: true };
+    case FETCHING_CUSTOMERS:
+      return { ...state, loadingCustomers: true };
 
-    case FETCHING_CUSTOMERS: 
-    return { ...state, loadingCustomers: true };
-
-    case FETCH_CUSTOMER_SUCCESS: 
-    return { ...state, loadingCustomers: false , customers:action.payload};
+    case FETCH_CUSTOMER_SUCCESS:
+      return { ...state, loadingCustomers: false, customers: action.payload };
     default:
       return state;
   }
